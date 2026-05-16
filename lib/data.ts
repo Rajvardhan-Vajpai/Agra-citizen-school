@@ -30,10 +30,10 @@ export const navItems = [
 ];
 
 export const stats = [
-  { value: 28, suffix: "+", label: "Years of learning legacy" },
-  { value: 2400, suffix: "+", label: "Students guided annually" },
-  { value: 120, suffix: "+", label: "Faculty and mentors" },
-  { value: 96, suffix: "%", label: "Board result excellence" }
+  { value: 15, suffix: "+", label: "Years of Academic Excellence" },
+  { value: 100, suffix: "%", label: "Board Success Rate" },
+  { value: 45, suffix: "+", label: "Expert Faculty Mentors" },
+  { value: 12, suffix: "+", label: "National Sports Titles" }
 ];
 
 export const whyChoose = [

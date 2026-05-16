@@ -1,23 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@theme {
+  --color-brand: #0a3d1f;
+  --color-brand-dark: #052613;
+  --color-gold: #c9a227;
+  --color-background: #fdfcf6;
+  --color-foreground: #0a3d1f;
+  --color-muted: #607169;
+  
+  --font-display: 'Playfair Display', serif;
+  --font-sans: 'Inter', sans-serif;
+}
+
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #102018;
-  --muted: #607169;
-  --brand: #0d7c4b;
-  --brand-dark: #075f3a;
-  --gold: #c79a35;
-}
-
-.dark {
-  --background: #07140f;
-  --foreground: #edf7f1;
-  --muted: #a9b8b0;
-  --brand: #36c37d;
-  --brand-dark: #0c8f58;
-  --gold: #f0c766;
+  --background: #fdfcf6;
+  --foreground: #0a3d1f;
+  --brand: #0a3d1f;
+  --gold: #c9a227;
 }
 
 * {
@@ -32,12 +35,12 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: Inter, Poppins, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--font-sans);
   text-rendering: optimizeLegibility;
 }
 
 main {
-  background: #ffffff;
+  background: var(--background);
 }
 
 .dark main {
@@ -45,16 +48,67 @@ main {
 }
 
 ::selection {
-  background: rgba(13, 124, 75, 0.22);
+  background: rgba(10, 61, 31, 0.22);
 }
 
 .font-display {
-  font-family: Poppins, Inter, ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-display);
 }
 
 .container-premium {
   width: min(1120px, calc(100% - 32px));
   margin-inline: auto;
+}
+
+.container-wide {
+  width: min(1440px, calc(100% - 48px));
+  margin-inline: auto;
+}
+
+/* Elite "Alive" Background Blobs */
+.blob {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: var(--color-gold);
+  filter: blur(120px);
+  opacity: 0.12;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  animation: breathe 20s infinite alternate ease-in-out;
+}
+
+.blob-green {
+  background: var(--color-brand);
+  animation-delay: -5s;
+}
+
+@keyframes breathe {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.08; }
+  33% { transform: translate(10%, 15%) scale(1.1); opacity: 0.15; }
+  66% { transform: translate(-5%, 20%) scale(0.9); opacity: 0.1; }
+  100% { transform: translate(0, 0) scale(1); opacity: 0.08; }
+}
+
+/* Expanding Underline for Nav */
+.link-underline {
+  position: relative;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--color-gold);
+  transition: width 0.3s cubic-bezier(0.65, 0.05, 0.36, 1);
+}
+
+.link-underline:hover::after {
+  width: 100%;
 }
 
 .glass {

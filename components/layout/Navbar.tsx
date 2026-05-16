@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, Facebook, Instagram, Menu, Moon, Phone, Sun, X, Youtube } from "lucide-react";
+import { ArrowRight, ChevronDown, Facebook, Instagram, Menu, Moon, Phone, Sun, X, Youtube } from "lucide-react";
 import { useEffect, useState } from "react";
 import { LogoLockup } from "@/components/brand/Logo";
 import { navItems } from "@/lib/data";
@@ -33,45 +33,30 @@ export function Navbar() {
   useEffect(() => setOpen(false), [pathname]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 shadow-lg shadow-emerald-950/10">
-      <div className="hidden border-b border-white/10 bg-emerald-950 text-white lg:block">
-        <div className="container-premium flex h-10 items-center justify-between text-xs font-semibold">
-          <div className="flex items-center gap-5">
-            <span className="flex items-center gap-2"><Phone size={14} /> +91 98765 43210</span>
-            <span>Welcome to AGRA CITIZEN SCHOOL, Agra</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <a href="#" className="hover:text-amber-200">Online Fee Payment</a>
-            <a href="#" className="hover:text-amber-200">ERP Login</a>
-            <a href="/admissions" className="rounded-full bg-amber-300 px-4 py-1.5 font-black text-emerald-950">Admission Open</a>
-            <Facebook size={15} />
-            <Instagram size={15} />
-            <Youtube size={16} />
-          </div>
-        </div>
-      </div>
-      <nav className={cn("transition duration-300", scrolled ? "bg-white/95 text-emerald-950 backdrop-blur-xl dark:bg-emerald-950/95 dark:text-white" : "bg-emerald-800 text-white")}>
-        <div className="container-premium flex h-20 items-center justify-between">
+    <header className="fixed inset-x-0 top-0 z-50">
+      <nav className={cn("transition-all duration-300 py-2", scrolled ? "bg-white/90 text-brand shadow-sm backdrop-blur-md border-b border-brand/5" : "bg-transparent text-brand")}>
+        <div className="container-wide flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-3" aria-label="AGRA CITIZEN SCHOOL home">
-          <LogoLockup light={!scrolled && true} />
+          <LogoLockup />
         </Link>
 
-        <div className="hidden items-center gap-1 lg:flex">
+        <div className="hidden items-center gap-8 lg:flex ml-12">
           {navItems.map((item) => (
             <div key={item.href} className="relative" onMouseEnter={() => item.label === "Academics" && setDropOpen(true)} onMouseLeave={() => setDropOpen(false)}>
               <Link
                 href={item.href}
-                className={cn("inline-flex items-center gap-1 rounded-full px-3 py-2 text-sm font-semibold transition", pathname === item.href ? "bg-amber-300 text-emerald-950" : scrolled ? "text-emerald-950 hover:bg-emerald-50 dark:text-white dark:hover:bg-white/10" : "text-white hover:bg-white/12")}
+                className={cn("group relative inline-flex items-center gap-1 px-2 py-2 text-[13px] font-bold tracking-[0.2em] uppercase transition-colors link-underline", pathname === item.href ? "text-brand" : "text-brand/50 hover:text-brand")}
               >
                 {item.label}
-                {item.label === "Academics" && <ChevronDown size={14} />}
+                {item.label === "Academics" && <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />}
+                <span className={cn("absolute bottom-0 left-0 h-0.5 w-full bg-gold scale-x-0 transition-transform duration-500 origin-left group-hover:scale-x-100", pathname === item.href && "scale-x-100")} />
               </Link>
               {item.label === "Academics" && (
                 <AnimatePresence>
                   {dropOpen && (
-                    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} className="absolute left-0 top-11 w-48 rounded-2xl border border-emerald-900/10 bg-white p-2 shadow-xl dark:border-white/10 dark:bg-emerald-950">
+                    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} className="absolute left-0 top-11 w-48 rounded-2xl border border-brand/10 bg-white p-2 shadow-xl">
                       {dropdown.map((drop) => (
-                        <Link key={drop.href} href={drop.href} className="block rounded-xl px-3 py-2 text-sm font-semibold hover:bg-emerald-50 dark:hover:bg-white/10">
+                        <Link key={drop.href} href={drop.href} className="block rounded-xl px-3 py-2 text-sm font-semibold hover:bg-brand/5">
                           {drop.label}
                         </Link>
                       ))}
@@ -83,11 +68,11 @@ export function Navbar() {
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
-          <button aria-label="Toggle dark mode" onClick={toggleTheme} className={cn("grid h-11 w-11 place-items-center rounded-full border shadow-sm backdrop-blur transition", scrolled ? "border-emerald-900/10 bg-white/80 hover:bg-white dark:border-white/10 dark:bg-white/10" : "border-white/20 bg-white/12 text-white hover:bg-white/18")}>
+        <div className="flex items-center gap-4">
+          <button aria-label="Toggle dark mode" onClick={toggleTheme} className="grid h-10 w-10 place-items-center rounded-full border border-brand/10 bg-white/50 text-brand hover:bg-white transition shadow-sm">
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <button aria-label="Open menu" onClick={() => setOpen(true)} className="grid h-11 w-11 place-items-center rounded-full bg-emerald-700 text-white lg:hidden">
+          <button aria-label="Open menu" onClick={() => setOpen(true)} className="grid h-10 w-10 place-items-center rounded-full bg-brand text-white lg:hidden shadow-md">
             <Menu size={20} />
           </button>
         </div>
