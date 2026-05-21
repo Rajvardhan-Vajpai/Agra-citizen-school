@@ -88,6 +88,29 @@
         backdrop-filter: blur(22px);
       }
 
+      .announcement {
+        position: absolute;
+        left: 50%;
+        top: calc(100% + 10px);
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+        transform: translateX(-50%);
+        border: 1px solid rgba(240, 216, 122, 0.35);
+        border-radius: 999px;
+        background: rgba(10, 61, 31, 0.92);
+        padding: 8px 14px;
+        color: var(--warm);
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        box-shadow: 0 18px 45px rgba(10, 61, 31, 0.22);
+      }
+
+      .announcement span {
+        color: var(--gold-soft);
+      }
+
       .brand {
         display: flex;
         align-items: center;
@@ -144,6 +167,73 @@
         color: var(--green-950);
       }
 
+      .menu-toggle {
+        display: none;
+        width: 50px;
+        height: 50px;
+        border: 0;
+        border-radius: 50%;
+        background: var(--green-950);
+        color: var(--warm);
+        cursor: pointer;
+        font-size: 24px;
+        box-shadow: 0 16px 30px rgba(10, 61, 31, 0.2);
+      }
+
+      .mobile-panel {
+        position: fixed;
+        inset: 0;
+        z-index: 80;
+        display: none;
+        background: rgba(10, 61, 31, 0.48);
+        backdrop-filter: blur(12px);
+      }
+
+      .mobile-panel.open {
+        display: block;
+      }
+
+      .mobile-card {
+        position: absolute;
+        right: 16px;
+        top: 16px;
+        width: min(360px, calc(100% - 32px));
+        border-radius: 28px;
+        background: var(--warm);
+        padding: 18px;
+        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.28);
+      }
+
+      .mobile-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+
+      .mobile-close {
+        display: grid;
+        width: 44px;
+        height: 44px;
+        place-items: center;
+        border: 0;
+        border-radius: 50%;
+        background: var(--green-100);
+        color: var(--green-950);
+        cursor: pointer;
+        font-size: 24px;
+      }
+
+      .mobile-card a {
+        display: block;
+        margin-top: 10px;
+        border-radius: 18px;
+        background: #fff;
+        padding: 14px 16px;
+        color: var(--green-950);
+        font-weight: 500;
+      }
+
       .btn {
         display: inline-flex;
         align-items: center;
@@ -189,7 +279,7 @@
       .hero {
         position: relative;
         min-height: 92vh;
-        padding: 96px 0 72px;
+        padding: 112px 0 72px;
         overflow: hidden;
       }
 
@@ -320,10 +410,20 @@
         border-radius: 34px;
         background:
           linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(255, 248, 238, 0.5)),
-          radial-gradient(circle at 80% 15%, rgba(240, 216, 122, 0.36), transparent 18rem);
+          radial-gradient(circle at 80% 15%, rgba(240, 216, 122, 0.46), transparent 18rem);
         box-shadow: 0 34px 100px rgba(10, 61, 31, 0.22);
         backdrop-filter: blur(18px);
         transition: transform 120ms ease-out;
+      }
+
+      .emblem-card::before {
+        content: "";
+        position: absolute;
+        inset: 18px;
+        border-radius: 26px;
+        border: 1px solid rgba(10, 61, 31, 0.08);
+        transform: translateZ(18px);
+        pointer-events: none;
       }
 
       .school-render {
@@ -336,6 +436,39 @@
           radial-gradient(circle at 68% 16%, var(--gold-soft), transparent 4.5rem),
           linear-gradient(145deg, var(--green-100), #fff);
         overflow: hidden;
+      }
+
+      .campus-layer {
+        position: absolute;
+        left: 50%;
+        bottom: 96px;
+        width: 78%;
+        height: 112px;
+        transform: translateX(-50%) translateZ(62px);
+        border-radius: 26px;
+        background:
+          linear-gradient(90deg, rgba(10, 61, 31, 0.22), transparent 10% 90%, rgba(10, 61, 31, 0.22)),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(223, 245, 232, 0.94));
+        box-shadow: 0 24px 42px rgba(10, 61, 31, 0.12);
+      }
+
+      .campus-layer::before,
+      .campus-layer::after {
+        content: "";
+        position: absolute;
+        bottom: 100%;
+        width: 30%;
+        height: 46px;
+        background: #fff;
+        clip-path: polygon(50% 0, 100% 100%, 0 100%);
+      }
+
+      .campus-layer::before {
+        left: 12%;
+      }
+
+      .campus-layer::after {
+        right: 12%;
       }
 
       .school-render::before {
@@ -377,6 +510,38 @@
         font-size: 40px;
         font-weight: 500;
         box-shadow: inset 0 2px 16px rgba(255, 255, 255, 0.7), 0 20px 42px rgba(10, 61, 31, 0.22);
+      }
+
+      .mini-card {
+        position: absolute;
+        display: grid;
+        gap: 4px;
+        min-width: 132px;
+        border: 1px solid rgba(255, 255, 255, 0.62);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.76);
+        padding: 14px;
+        color: var(--green-950);
+        font-size: 12px;
+        font-weight: 500;
+        box-shadow: 0 18px 40px rgba(10, 61, 31, 0.14);
+        backdrop-filter: blur(16px);
+        transform: translateZ(86px);
+      }
+
+      .mini-card strong {
+        font-size: 22px;
+        line-height: 1;
+      }
+
+      .mini-left {
+        left: 28px;
+        bottom: 56px;
+      }
+
+      .mini-right {
+        right: 28px;
+        top: 68px;
       }
 
       .subject-pills {
@@ -462,6 +627,12 @@
         padding: 96px 0;
       }
 
+      .cream-band {
+        background:
+          radial-gradient(circle at 8% 18%, rgba(168, 230, 188, 0.36), transparent 24rem),
+          var(--warm);
+      }
+
       .section-head {
         max-width: 720px;
         margin: 0 auto 44px;
@@ -526,10 +697,41 @@
       }
 
       .feature-grid,
-      .news-grid {
+      .news-grid,
+      .why-grid,
+      .testimonial-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 16px;
+      }
+
+      .why-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .why-card {
+        min-height: 300px;
+        padding: 28px;
+      }
+
+      .why-card::after {
+        content: "";
+        position: absolute;
+        inset: auto -20% -42% -20%;
+        height: 58%;
+        background: radial-gradient(circle, rgba(82, 194, 120, 0.18), transparent 64%);
+        pointer-events: none;
+      }
+
+      .why-number {
+        position: absolute;
+        right: 22px;
+        top: 18px;
+        color: rgba(10, 61, 31, 0.08);
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 64px;
+        font-weight: 700;
+        line-height: 1;
       }
 
       .tilt-card {
@@ -568,6 +770,46 @@
 
       .news-grid {
         grid-template-columns: repeat(3, 1fr);
+      }
+
+      .admission-steps {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+      }
+
+      .admission-steps::before {
+        content: "";
+        position: absolute;
+        left: 9%;
+        right: 9%;
+        top: 54px;
+        height: 3px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--green-200), var(--green-600), var(--gold-soft));
+      }
+
+      .step-card {
+        position: relative;
+        text-align: center;
+      }
+
+      .step-node {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        width: 108px;
+        height: 108px;
+        place-items: center;
+        margin: 0 auto 20px;
+        border: 10px solid var(--cream);
+        border-radius: 50%;
+        background: linear-gradient(145deg, var(--green-950), var(--green-600));
+        color: var(--warm);
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 38px;
+        box-shadow: 0 24px 52px rgba(10, 61, 31, 0.22), inset 0 2px 8px rgba(255, 255, 255, 0.24);
       }
 
       .media-block {
@@ -679,6 +921,49 @@
         background: rgba(255, 255, 255, 0.72);
         padding: 28px;
         box-shadow: var(--shadow);
+      }
+
+      .testimonial-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .quote-card {
+        min-height: 300px;
+      }
+
+      .quote-card p {
+        margin: 18px 0 0;
+      }
+
+      .person {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .avatar {
+        display: grid;
+        width: 54px;
+        height: 54px;
+        place-items: center;
+        border-radius: 50%;
+        background: linear-gradient(145deg, var(--gold-soft), var(--green-400));
+        color: var(--green-950);
+        font-weight: 500;
+        box-shadow: inset 0 2px 8px rgba(255, 255, 255, 0.5);
+      }
+
+      .person strong {
+        display: block;
+        color: var(--green-950);
+        font-weight: 500;
+      }
+
+      .person span {
+        display: block;
+        color: var(--muted);
+        font-size: 13px;
       }
 
       .contact-list {
@@ -796,7 +1081,16 @@
         }
 
         .nav-links {
-          flex-wrap: wrap;
+          display: none;
+        }
+
+        .menu-toggle {
+          display: grid;
+          place-items: center;
+        }
+
+        .announcement {
+          display: none;
         }
 
         .hero-grid,
@@ -811,8 +1105,15 @@
         }
 
         .news-grid,
-        .feature-grid {
+        .feature-grid,
+        .why-grid,
+        .admission-steps,
+        .testimonial-grid {
           grid-template-columns: 1fr;
+        }
+
+        .admission-steps::before {
+          display: none;
         }
 
         .mosaic {
@@ -826,8 +1127,8 @@
           margin-top: 8px;
         }
 
-        .nav-links a:not(.btn) {
-          display: none;
+        .brand strong {
+          font-size: 17px;
         }
 
         .hero {
@@ -871,8 +1172,32 @@
           <a href="#contact">Contact</a>
           <a class="btn btn-primary nav-cta" href="#contact">Admissions Open -></a>
         </div>
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="mobileMenu">☰</button>
+        <div class="announcement"><span>Admissions Open 2025-26</span> Limited seats available for early applicants</div>
       </div>
     </nav>
+
+    <div class="mobile-panel" id="mobileMenu" aria-hidden="true">
+      <div class="mobile-card">
+        <div class="mobile-top">
+          <a class="brand" href="#top" aria-label="Agra Citizen School home">
+            <span class="logo">ACS</span>
+            <span>
+              <strong>Agra Citizen School</strong>
+              <span>Agra, Uttar Pradesh</span>
+            </span>
+          </a>
+          <button class="mobile-close" type="button" aria-label="Close menu">×</button>
+        </div>
+        <a href="#about">About</a>
+        <a href="#why">Why ACS</a>
+        <a href="#admissions">Admissions</a>
+        <a href="#news">News</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
 
     <main id="top">
       <section class="hero">
@@ -906,7 +1231,10 @@
             <span class="chip chip-three">Future Ready</span>
             <div class="emblem-card" data-tilt-card>
               <div class="school-render"></div>
+              <div class="campus-layer"></div>
               <div class="emblem">ACS</div>
+              <div class="mini-card mini-left"><strong>98%</strong>Board Results</div>
+              <div class="mini-card mini-right"><strong>1200+</strong>Students Guided</div>
               <div class="subject-pills">
                 <span>Science</span>
                 <span>Sports</span>
@@ -915,6 +1243,42 @@
                 <span>Leadership</span>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="why" class="cream-band">
+        <div class="container">
+          <div class="section-head reveal">
+            <span class="tag">Why ACS</span>
+            <h2>Designed for ambitious families.</h2>
+            <p>Everything parents look for, presented with clarity: strong academics, safe systems, modern learning, and full-person growth.</p>
+          </div>
+          <div class="why-grid">
+            <article class="tilt-card why-card reveal">
+              <span class="why-number">01</span>
+              <span class="icon-bubble">📈</span>
+              <h3>Academic Excellence</h3>
+              <p>Clear lesson design, regular practice, feedback loops, and result-focused mentoring.</p>
+            </article>
+            <article class="tilt-card why-card reveal">
+              <span class="why-number">02</span>
+              <span class="icon-bubble">🏛️</span>
+              <h3>Modern Campus</h3>
+              <p>Learning spaces shaped for attention, collaboration, practical work, and confidence.</p>
+            </article>
+            <article class="tilt-card why-card reveal">
+              <span class="why-number">03</span>
+              <span class="icon-bubble">🛡️</span>
+              <h3>Safe Environment</h3>
+              <p>Thoughtful supervision, disciplined routines, and a school culture built on care.</p>
+            </article>
+            <article class="tilt-card why-card reveal">
+              <span class="why-number">04</span>
+              <span class="icon-bubble">🌟</span>
+              <h3>Holistic Growth</h3>
+              <p>Sports, arts, clubs, leadership, public speaking, and values in everyday life.</p>
+            </article>
           </div>
         </div>
       </section>
@@ -937,6 +1301,38 @@
               <article class="tilt-card"><span class="icon-bubble">🏆</span><h3>Sports</h3><p>Fitness, teamwork, athletics, and competitive spirit.</p></article>
               <article class="tilt-card"><span class="icon-bubble">🎨</span><h3>Arts</h3><p>Music, performance, visual arts, and self-expression.</p></article>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="admissions" class="cream-band">
+        <div class="container">
+          <div class="section-head reveal">
+            <span class="tag">Admissions Journey</span>
+            <h2>Simple steps. Clear guidance.</h2>
+            <p>From first inquiry to final confirmation, families get a smooth and reassuring admission experience.</p>
+          </div>
+          <div class="admission-steps">
+            <article class="step-card reveal">
+              <div class="step-node">1</div>
+              <h3>Inquiry</h3>
+              <p>Share the class, contact details, and preferred visit time.</p>
+            </article>
+            <article class="step-card reveal">
+              <div class="step-node">2</div>
+              <h3>Campus Visit</h3>
+              <p>Explore classrooms, labs, sports areas, and school culture.</p>
+            </article>
+            <article class="step-card reveal">
+              <div class="step-node">3</div>
+              <h3>Interaction</h3>
+              <p>Meet the academic team and understand the right learning fit.</p>
+            </article>
+            <article class="step-card reveal">
+              <div class="step-node">4</div>
+              <h3>Confirmation</h3>
+              <p>Complete documents and begin the ACS journey.</p>
+            </article>
           </div>
         </div>
       </section>
@@ -984,6 +1380,32 @@
             <div class="tile reveal"><div class="tile-content"><span class="tile-icon">⚽</span><strong>Sports</strong></div></div>
             <div class="tile reveal"><div class="tile-content"><span class="tile-icon">🎭</span><strong>Events</strong></div></div>
             <div class="tile reveal"><div class="tile-content"><span class="tile-icon">🌱</span><strong>Clubs</strong></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="testimonials" class="cream-band">
+        <div class="container">
+          <div class="section-head reveal">
+            <span class="tag">Testimonials</span>
+            <h2>Trusted by parents and students.</h2>
+          </div>
+          <div class="testimonial-grid">
+            <article class="tilt-card quote-card reveal">
+              <span class="icon-bubble">“</span>
+              <p>The school feels disciplined yet warm. Teachers communicate clearly and my child has become more confident.</p>
+              <div class="person"><span class="avatar">RS</span><span><strong>Ritika Sharma</strong><span>Parent</span></span></div>
+            </article>
+            <article class="tilt-card quote-card reveal">
+              <span class="icon-bubble">“</span>
+              <p>ACS helped me discover public speaking, sports, and science projects. It made school feel bigger than exams.</p>
+              <div class="person"><span class="avatar">AG</span><span><strong>Aarav Gupta</strong><span>Student</span></span></div>
+            </article>
+            <article class="tilt-card quote-card reveal">
+              <span class="icon-bubble">“</span>
+              <p>The campus visit was excellent. The admission process was transparent, quick, and very parent-friendly.</p>
+              <div class="person"><span class="avatar">NV</span><span><strong>Nisha Verma</strong><span>Parent</span></span></div>
+            </article>
           </div>
         </div>
       </section>
@@ -1085,6 +1507,7 @@
 
       function bindTilt(card, max = 9) {
         card.addEventListener("mousemove", (event) => {
+          if (window.matchMedia("(pointer: coarse)").matches) return;
           const rect = card.getBoundingClientRect();
           const x = event.clientX - rect.left;
           const y = event.clientY - rect.top;
@@ -1100,6 +1523,26 @@
 
       document.querySelectorAll("[data-tilt-card]").forEach((card) => bindTilt(card, 7));
       document.querySelectorAll(".tilt-card").forEach((card) => bindTilt(card, 4));
+
+      const mobilePanel = document.querySelector("#mobileMenu");
+      const menuToggle = document.querySelector(".menu-toggle");
+      const mobileClose = document.querySelector(".mobile-close");
+
+      function setMobileMenu(open) {
+        mobilePanel.classList.toggle("open", open);
+        mobilePanel.setAttribute("aria-hidden", String(!open));
+        document.body.style.overflow = open ? "hidden" : "";
+      }
+
+      menuToggle.addEventListener("click", () => setMobileMenu(true));
+      mobileClose.addEventListener("click", () => setMobileMenu(false));
+      mobilePanel.addEventListener("click", (event) => {
+        if (event.target === mobilePanel || event.target.closest("a")) setMobileMenu(false);
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") setMobileMenu(false);
+      });
 
       document.querySelector("form").addEventListener("submit", (event) => {
         event.preventDefault();

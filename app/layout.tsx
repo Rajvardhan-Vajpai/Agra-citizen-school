@@ -1,10 +1,24 @@
 import type { Metadata } from "next";
+import { DM_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { FloatingActions } from "@/components/layout/FloatingActions";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { LoadingScreen } from "@/components/layout/LoadingScreen";
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["300", "500"],
+  variable: "--font-body"
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["700"],
+  style: ["normal", "italic"],
+  variable: "--font-display"
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://agra-citizen-school.vercel.app"),
@@ -37,7 +51,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className={`${dmSans.variable} ${playfair.variable}`}>
         <ThemeProvider>
           <LoadingScreen />
           <Navbar />
