@@ -43,22 +43,42 @@ export function InquiryForm({ compact = false }: { compact?: boolean }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className={cn("grid gap-4 rounded-2xl border border-emerald-900/10 bg-white p-5 shadow-xl shadow-emerald-950/5 dark:border-white/10 dark:bg-white/[0.06]", !compact && "sm:p-8")}>
+    <form
+      onSubmit={handleSubmit}
+      className={cn(
+        "soft-card grid gap-4 rounded-[26px] p-5",
+        !compact && "sm:p-8"
+      )}
+    >
       <div className="grid gap-4 sm:grid-cols-2">
         {fields.map((field) => (
-          <label key={field.name} className="grid gap-2 text-sm font-semibold">
+          <label key={field.name} className="grid gap-2 text-sm font-medium text-[var(--brand)]">
             {field.label}
-            <input name={field.name} type={field.type} className="min-h-12 rounded-xl border border-emerald-900/10 bg-white px-4 outline-none transition focus:border-emerald-600 dark:border-white/10 dark:bg-white/10" />
+            <input
+              name={field.name}
+              type={field.type}
+              className="min-h-12 rounded-[18px] border border-[rgba(10,61,31,0.12)] bg-white px-4 text-[var(--foreground)] outline-none transition focus:border-[rgba(46,153,82,0.55)] focus:shadow-[inset_0_4px_14px_rgba(10,61,31,0.12),0_0_0_5px_rgba(82,194,120,0.12)]"
+            />
             {errors[field.name] && <span className="text-xs text-red-600">{errors[field.name]}</span>}
           </label>
         ))}
       </div>
-      <label className="grid gap-2 text-sm font-semibold">
+      <label className="grid gap-2 text-sm font-medium text-[var(--brand)]">
         Message
-        <textarea name="message" rows={compact ? 3 : 5} className="rounded-xl border border-emerald-900/10 bg-white px-4 py-3 outline-none transition focus:border-emerald-600 dark:border-white/10 dark:bg-white/10" />
+        <textarea
+          name="message"
+          rows={compact ? 3 : 5}
+          className="rounded-[18px] border border-[rgba(10,61,31,0.12)] bg-white px-4 py-3 text-[var(--foreground)] outline-none transition focus:border-[rgba(46,153,82,0.55)] focus:shadow-[inset_0_4px_14px_rgba(10,61,31,0.12),0_0_0_5px_rgba(82,194,120,0.12)]"
+        />
       </label>
-      <Button type="submit" disabled={loading}>{loading ? "Submitting..." : "Submit Inquiry"}</Button>
-      {success && <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-200">Thank you. Our admissions team will contact you shortly.</p>}
+      <Button type="submit" disabled={loading}>
+        {loading ? "Submitting..." : "Submit Inquiry"}
+      </Button>
+      {success && (
+        <p className="rounded-[18px] bg-[var(--brand-faint)] px-4 py-3 text-sm font-medium text-[var(--brand)]">
+          Thank you. Our admissions team will contact you shortly.
+        </p>
+      )}
     </form>
   );
 }

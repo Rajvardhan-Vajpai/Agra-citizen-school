@@ -1,300 +1,380 @@
 "use client";
 
-import Link from "next/link";
+import type { CSSProperties, MouseEvent } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Quote } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  Building2,
+  FlaskConical,
+  LibraryBig,
+  Palette,
+  Quote,
+  ShieldCheck,
+  Sparkles,
+  Trophy,
+  UsersRound
+} from "lucide-react";
 import { AnimatedCounter } from "@/components/home/AnimatedCounter";
 import { InquiryForm } from "@/components/forms/InquiryForm";
 import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
-import { PlaceholderImage } from "@/components/ui/PlaceholderImage";
-import { Reveal } from "@/components/ui/Reveal";
-import { Section } from "@/components/ui/Section";
-import { events, facilities, programs, stats, testimonials, whyChoose } from "@/lib/data";
+import { events, programs, testimonials } from "@/lib/data";
+import { cn } from "@/lib/utils";
+
+const heroStats = [
+  { value: 15, suffix: "+", label: "Years of Excellence" },
+  { value: 1200, suffix: "+", label: "Students" },
+  { value: 98, suffix: "%", label: "Results" }
+];
+
+const whyCards = [
+  { icon: Trophy, title: "Academic Excellence", text: "Clear lesson design, regular practice, feedback loops, and result-focused mentoring." },
+  { icon: Building2, title: "Modern Campus", text: "Learning spaces shaped for attention, collaboration, practical work, and confidence." },
+  { icon: ShieldCheck, title: "Safe Environment", text: "Thoughtful supervision, disciplined routines, and a school culture built on care." },
+  { icon: Sparkles, title: "Holistic Growth", text: "Sports, arts, clubs, leadership, public speaking, and values in everyday life." }
+];
+
+const admissionSteps = [
+  { title: "Inquiry", text: "Share the class, contact details, and preferred visit time." },
+  { title: "Campus Visit", text: "Explore classrooms, labs, sports areas, and school culture." },
+  { title: "Interaction", text: "Meet the academic team and understand the right learning fit." },
+  { title: "Confirmation", text: "Complete documents and begin the ACS journey." }
+];
+
+const galleryTiles = [
+  { label: "Campus", icon: Building2, large: true },
+  { label: "Library", icon: LibraryBig },
+  { label: "Labs", icon: FlaskConical },
+  { label: "Sports", icon: Trophy },
+  { label: "Events", icon: UsersRound },
+  { label: "Clubs", icon: Sparkles }
+];
+
+function TiltCard({
+  children,
+  className,
+  max = 7
+}: {
+  children: React.ReactNode;
+  className?: string;
+  max?: number;
+}) {
+  const [style, setStyle] = useState<CSSProperties>({});
+
+  function handleMove(event: MouseEvent<HTMLDivElement>) {
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    const rotateY = (x / rect.width - 0.5) * max * 2;
+    const rotateX = -(y / rect.height - 0.5) * max * 2;
+    setStyle({ transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)` });
+  }
+
+  return (
+    <div
+      onMouseMove={handleMove}
+      onMouseLeave={() => setStyle({ transform: "perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0)" })}
+      style={style}
+      className={cn(
+        "soft-card relative overflow-hidden p-6 transition-[box-shadow,transform] duration-300 hover:shadow-[0_28px_70px_rgba(10,61,31,0.18)]",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
+function SectionHeading({ tag, title, text, light = false }: { tag: string; title: string; text?: string; light?: boolean }) {
+  return (
+    <div className="mx-auto mb-11 max-w-3xl text-center">
+      <span className={cn("section-tag mb-4", light && "bg-white/10 text-[var(--brand-pale)]")}>{tag}</span>
+      <h2 className={cn("font-display text-4xl font-bold leading-none tracking-[-0.045em] sm:text-5xl lg:text-6xl", light && "text-[var(--warm)]")}>
+        {title}
+      </h2>
+      {text && <p className={cn("mx-auto mt-5 max-w-2xl text-lg text-[color:var(--muted)]", light && "text-white/60")}>{text}</p>}
+    </div>
+  );
+}
+
+function HeroVisual() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.94, y: 24 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="relative min-h-[480px] perspective-[1000px] lg:min-h-[560px]"
+    >
+      <motion.span animate={{ y: [0, -14, 0] }} transition={{ repeat: Infinity, duration: 4.6 }} className="absolute left-0 top-10 z-10 rounded-full border border-[rgba(10,61,31,0.12)] bg-white/70 px-4 py-2 text-sm font-medium text-[var(--brand)] shadow-[0_10px_30px_rgba(10,61,31,0.1)] backdrop-blur">
+        Smart Classrooms
+      </motion.span>
+      <motion.span animate={{ y: [0, 14, 0] }} transition={{ repeat: Infinity, duration: 5.1 }} className="absolute right-0 top-40 z-10 rounded-full border border-[rgba(10,61,31,0.12)] bg-white/70 px-4 py-2 text-sm font-medium text-[var(--brand)] shadow-[0_10px_30px_rgba(10,61,31,0.1)] backdrop-blur">
+        Safe Campus
+      </motion.span>
+      <motion.span animate={{ y: [0, -12, 0] }} transition={{ repeat: Infinity, duration: 5.4 }} className="absolute bottom-20 left-12 z-10 rounded-full border border-[rgba(10,61,31,0.12)] bg-white/70 px-4 py-2 text-sm font-medium text-[var(--brand)] shadow-[0_10px_30px_rgba(10,61,31,0.1)] backdrop-blur">
+        Future Ready
+      </motion.span>
+
+      <TiltCard className="absolute inset-10 rounded-[34px] border-white/60 bg-[radial-gradient(circle_at_80%_15%,rgba(240,216,122,0.46),transparent_18rem),linear-gradient(145deg,rgba(255,255,255,0.82),rgba(255,248,238,0.5))] p-0 shadow-[0_34px_100px_rgba(10,61,31,0.22)] backdrop-blur" max={7}>
+        <div className="absolute inset-5 rounded-[26px] border border-[rgba(10,61,31,0.08)]" />
+        <div className="absolute inset-x-10 top-11 h-[58%] rounded-[30px] bg-[linear-gradient(180deg,transparent_0_46%,rgba(10,61,31,0.08)_46%),radial-gradient(circle_at_68%_16%,var(--gold-soft),transparent_4.5rem),linear-gradient(145deg,var(--brand-faint),#fff)] shadow-inner">
+          <div className="absolute bottom-[20%] left-[13%] h-[38%] w-[74%] rounded-t-3xl bg-gradient-to-b from-white to-[#edf8f0] shadow-[0_24px_40px_rgba(10,61,31,0.14)]" />
+          <div className="absolute bottom-[31%] left-[22%] h-[18%] w-[56%] bg-[repeating-linear-gradient(90deg,var(--brand-mid)_0_12%,transparent_12%_22%)] opacity-55" />
+        </div>
+        <div className="absolute bottom-24 left-1/2 h-28 w-[78%] -translate-x-1/2 rounded-[26px] bg-[linear-gradient(90deg,rgba(10,61,31,0.22),transparent_10%_90%,rgba(10,61,31,0.22)),linear-gradient(180deg,rgba(255,255,255,0.96),rgba(223,245,232,0.94))] shadow-[0_24px_42px_rgba(10,61,31,0.12)]">
+          <div className="absolute bottom-full left-[12%] h-12 w-[30%] bg-white [clip-path:polygon(50%_0,100%_100%,0_100%)]" />
+          <div className="absolute bottom-full right-[12%] h-12 w-[30%] bg-white [clip-path:polygon(50%_0,100%_100%,0_100%)]" />
+        </div>
+        <div className="absolute bottom-[68px] left-1/2 grid h-30 w-30 -translate-x-1/2 place-items-center rounded-full bg-gradient-to-br from-[var(--gold-soft)] to-[var(--brand-soft)] text-4xl font-medium text-[var(--brand)] shadow-[inset_0_2px_16px_rgba(255,255,255,0.7),0_20px_42px_rgba(10,61,31,0.22)]">
+          ACS
+        </div>
+        <div className="absolute bottom-14 left-7 grid min-w-32 gap-1 rounded-[20px] border border-white/60 bg-white/75 p-3 text-xs font-medium text-[var(--brand)] shadow-[0_18px_40px_rgba(10,61,31,0.14)] backdrop-blur">
+          <strong className="text-2xl leading-none">98%</strong>
+          Board Results
+        </div>
+        <div className="absolute right-7 top-16 grid min-w-34 gap-1 rounded-[20px] border border-white/60 bg-white/75 p-3 text-xs font-medium text-[var(--brand)] shadow-[0_18px_40px_rgba(10,61,31,0.14)] backdrop-blur">
+          <strong className="text-2xl leading-none">1200+</strong>
+          Students Guided
+        </div>
+      </TiltCard>
+    </motion.div>
+  );
+}
 
 export function HomePage() {
   return (
     <>
-      <section className="relative min-h-screen overflow-hidden bg-background pt-32 lg:pt-40">
-        {/* Animated Background Presence */}
-        <div className="blob top-[-10%] left-[-10%] opacity-15" />
-        <div className="blob blob-green bottom-[-10%] right-[-10%] opacity-10" />
-        <div className="absolute inset-0 hero-grid opacity-[0.03] pointer-events-none" />
-        
-        <div className="container-premium relative grid items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="relative">
-            <Reveal delay={0}>
-              <div className="mb-8 flex items-center gap-2 rounded-full border border-brand/10 bg-white px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-brand shadow-sm w-fit">
-                <span className="h-1.5 w-1.5 rounded-full bg-gold animate-pulse" />
-                CBSE • CO-EDUCATIONAL • AGRA
-              </div>
-            </Reveal>
-            
-            <Reveal delay={0.1}>
-              <h1 className="font-display text-4xl font-medium leading-[1] text-brand sm:text-5xl lg:text-6xl xl:text-7xl tracking-tight">
-                Where tradition <span className="italic text-brand/80 font-normal">meets</span> tomorrow, on the banks of the <span className="relative inline-block">Yamuna.<span className="absolute bottom-2 left-0 h-1.5 w-full bg-gold/30 -z-10" /></span>
-              </h1>
-            </Reveal>
-            
-            <Reveal delay={0.2}>
-              <p className="mt-8 max-w-xl text-lg leading-relaxed text-brand/70 sm:text-xl">
-                A prestigious co-educational day school in Agra nurturing curious, kind and capable minds since 2009. Rooted in classical values, re-imagined for a modern world.
-              </p>
-            </Reveal>
-            
-            <Reveal delay={0.3}>
-              <div className="mt-10 flex flex-wrap gap-4">
-                <Button href="/admissions" className="group bg-brand text-white hover:bg-brand-dark px-8 py-4 text-base shadow-xl">
-                  Apply for Admission <ArrowRight className="ml-2 transition-transform group-hover:translate-x-1" size={20} />
-                </Button>
-                <Button href="/contact" variant="secondary" className="border-brand/20 text-brand hover:bg-brand/5 px-8 py-4 text-base">
-                  Schedule a Visit
-                </Button>
-              </div>
-            </Reveal>
+      <section className="relative min-h-screen overflow-hidden pt-34 lg:pt-38">
+        <motion.span className="absolute left-[2%] top-[18%] h-42 w-42 rounded-full bg-[rgba(82,194,120,0.2)] opacity-55" animate={{ y: [0, -26, 0], rotate: [0, 12, 0] }} transition={{ repeat: Infinity, duration: 9 }} />
+        <motion.span className="absolute right-[7%] top-[9%] h-55 w-55 rounded-full border-[26px] border-[rgba(201,162,39,0.13)] opacity-55" animate={{ y: [0, -24, 0], rotate: [0, -12, 0] }} transition={{ repeat: Infinity, duration: 10 }} />
+        <motion.span className="absolute bottom-[12%] right-[40%] h-23 w-23 rounded-full bg-[rgba(46,153,82,0.17)] opacity-55" animate={{ y: [0, 22, 0], rotate: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 8 }} />
 
-            <Reveal delay={0.4}>
-              <div className="mt-12 flex gap-12 border-t border-brand/10 pt-8">
-                {[
-                  { label: "Founded", value: "2009" },
-                  { label: "Faculty", value: "45+" },
-                  { label: "Students", value: "850+" }
-                ].map((stat, idx) => (
-                  <motion.div 
-                    key={stat.label}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 + idx * 0.1 }}
-                  >
-                    <p className="font-display text-2xl font-bold text-brand">{stat.value}</p>
-                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand/40 mt-1">{stat.label}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </Reveal>
-          </div>
-
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95, x: 40 }} 
-            animate={{ opacity: 1, scale: 1, x: 0 }} 
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            className="relative lg:-mt-24 flex flex-col items-end"
-          >
-            {/* The "Admissions Open" button placed above the card */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5 }}
-              className="mb-8"
-            >
-              <Link 
-                href="/admissions" 
-                className="group relative flex items-center gap-3 overflow-hidden rounded-full bg-gold/10 px-6 py-3 text-sm font-bold text-gold backdrop-blur-md border border-gold/20 transition-all hover:bg-gold hover:text-white shadow-lg"
-              >
-                <span className="relative z-10">Admissions Open 2026-27</span>
-                <ArrowRight size={18} className="relative z-10 transition-transform group-hover:translate-x-1" />
-                <div className="absolute inset-0 -z-0 translate-y-full bg-gold transition-transform group-hover:translate-y-0" />
-              </Link>
-            </motion.div>
-
-            {/* The "Identity" Floating Card */}
-            <motion.div 
-              className="relative z-10 overflow-hidden rounded-[2.5rem] bg-brand p-8 text-white shadow-2xl lg:p-10 cursor-pointer"
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            >
-              <div className="absolute top-0 right-0 p-8 opacity-20">
-                <div className="rounded-full border-2 border-white p-3">
-                  <CheckCircle2 size={32} />
-                </div>
-              </div>
-              
-              <div className="mb-10">
-                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/50">IDENTITY • 2026</p>
-                <h3 className="mt-2 text-sm font-display font-bold tracking-widest text-gold">AGRA CITIZEN SCHOOL</h3>
-              </div>
-              
-              <div className="mb-12">
-                <h2 className="font-display text-4xl font-medium sm:text-5xl lg:text-6xl">
-                  Veritas. Virtus. <span className="italic text-gold">Vita.</span>
-                </h2>
-                <p className="mt-4 text-sm font-medium tracking-wide text-white/60 uppercase">Truth • Excellence • Life well-lived</p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { label: "OLYMPIAD", value: "National Gold", icon: ArrowRight },
-                  { label: "BOARDS", value: "98% Pass", icon: ArrowRight },
-                  { label: "LABS", value: "6 Modern", icon: ArrowRight },
-                  { label: "ARTS", value: "12 Studios", icon: ArrowRight }
-                ].map((item) => (
-                  <motion.div 
-                    key={item.label} 
-                    className="group rounded-2xl bg-white/5 p-5 backdrop-blur-md border border-white/10 transition-all hover:border-white/40 hover:shadow-2xl"
-                    whileHover={{ y: -12, scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.15)" }}
-                    transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                  >
-                    <p className="text-[9px] font-black tracking-[0.3em] text-gold/60 mb-3 uppercase transition-colors group-hover:text-gold">{item.label}</p>
-                    <p className="font-display text-xl font-bold text-white group-hover:text-white">{item.value}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Decorative Elements */}
-            <div className="absolute -bottom-6 -left-6 h-32 w-32 rounded-3xl bg-gold/10 -z-10 blur-2xl" />
-            <div className="absolute -top-12 -right-12 h-64 w-64 rounded-full bg-brand/5 -z-10 blur-3xl" />
+        <div className="container-premium relative z-10 grid min-h-[calc(100vh-7rem)] items-center gap-12 py-16 lg:grid-cols-[1.02fr_.98fr]">
+          <motion.div initial={{ opacity: 0, y: 36 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: "easeOut" }}>
+            <span className="mb-5 inline-flex items-center gap-3 rounded-full border border-[rgba(46,153,82,0.22)] bg-[rgba(223,245,232,0.8)] px-4 py-2 text-sm font-medium text-[var(--brand)] before:h-2.5 before:w-2.5 before:rounded-full before:bg-[var(--brand-mid)] before:shadow-[0_0_0_7px_rgba(46,153,82,0.11)]">
+              Admissions Open 2025-26
+            </span>
+            <span className="mb-4 block font-display text-4xl font-bold italic tracking-[-0.045em] text-[var(--brand)] sm:text-5xl">
+              Agra Citizen <span className="text-[var(--gold)]">School</span>
+            </span>
+            <h1 className="max-w-3xl font-display text-6xl font-bold leading-none tracking-[-0.045em] text-[var(--foreground)] sm:text-7xl lg:text-[104px]">
+              Where Young Minds Grow & <span className="italic text-[var(--brand-mid)]">Flourish</span>
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg text-[color:var(--muted)]">
+              Agra Citizen School blends academic discipline, future-ready learning,
+              creative confidence, and a warm values-led environment for every child.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Button href="/admissions">Apply Now <ArrowRight className="ml-2" size={18} /></Button>
+              <Button href="/gallery" variant="secondary">Virtual Tour</Button>
+            </div>
+            <div className="mt-10 grid max-w-2xl gap-3 sm:grid-cols-3">
+              {heroStats.map((item) => (
+                <AnimatedCounter key={item.label} {...item} />
+              ))}
+            </div>
           </motion.div>
+
+          <HeroVisual />
         </div>
       </section>
 
-      <Section className="bg-white relative dark:bg-emerald-950" eyebrow="About" title="AGRA CITIZEN SCHOOL" text="A premier school in Agra focused on academic discipline, holistic growth, and a safe, inclusive learning environment.">
-        <div className="grid items-center gap-16 lg:grid-cols-[.95fr_1.05fr]">
-          <Reveal>
-            <div className="relative group">
-              <PlaceholderImage title="Campus Life" className="min-h-[420px] rounded-[3rem] shadow-2xl transition-transform duration-700 group-hover:scale-[1.02]" />
-              <div className="absolute inset-0 rounded-[3rem] border border-brand/5 pointer-events-none" />
+      <section className="cream-band py-20 lg:py-24">
+        <div className="container-premium">
+          <SectionHeading
+            tag="Why ACS"
+            title="Designed for ambitious families."
+            text="Everything parents look for, presented with clarity: strong academics, safe systems, modern learning, and full-person growth."
+          />
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {whyCards.map((item, index) => (
+              <TiltCard key={item.title} className="min-h-[300px] p-7" max={4}>
+                <span className="absolute right-5 top-4 font-display text-6xl font-bold leading-none text-[rgba(10,61,31,0.08)]">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <div className="grid h-13 w-13 place-items-center rounded-[18px] bg-[var(--brand-faint)] text-[var(--brand)]">
+                  <item.icon size={24} />
+                </div>
+                <h3 className="mt-5 font-display text-2xl font-bold tracking-[-0.02em] text-[var(--foreground)]">{item.title}</h3>
+                <p className="mt-3 text-[color:var(--muted)]">{item.text}</p>
+              </TiltCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 lg:py-24">
+        <div className="container-premium grid items-center gap-12 lg:grid-cols-[.95fr_1.05fr]">
+          <div className="relative min-h-[520px] overflow-hidden rounded-[28px] bg-[radial-gradient(circle_at_75%_15%,rgba(240,216,122,0.7),transparent_8rem),linear-gradient(135deg,rgba(10,61,31,0.78),rgba(82,194,120,0.58))] shadow-[var(--shadow-soft)]">
+            <div className="absolute inset-x-10 top-11 bottom-32 rounded-[28px] bg-[linear-gradient(90deg,rgba(255,255,255,0.95)_0_20%,transparent_20%_27%,rgba(255,255,255,0.95)_27%_47%,transparent_47%_54%,rgba(255,255,255,0.95)_54%_74%,transparent_74%_81%,rgba(255,255,255,0.95)_81%),linear-gradient(180deg,rgba(255,255,255,0.18),rgba(255,255,255,0.42))]" />
+            <div className="absolute bottom-6 right-6 rounded-[22px] bg-[rgba(255,248,238,0.86)] px-5 py-4 font-medium text-[var(--brand)] shadow-[0_18px_36px_rgba(10,61,31,0.18)] backdrop-blur">
+              20+ Expert Faculty
             </div>
-          </Reveal>
-          <div className="space-y-8">
-            <Reveal delay={0.2}>
-              <p className="text-xl leading-relaxed text-brand/80 font-medium">Inspired by the heritage of Agra, AGRA CITIZEN SCHOOL provides a modern, sophisticated environment for the leaders of tomorrow.</p>
-            </Reveal>
-            <div className="grid gap-4">
-              {["Experienced faculty and thoughtful mentoring", "Smart classrooms with active learning routines", "Clubs, sports, arts, leadership, and service"].map((item, idx) => (
-                <Reveal key={item} delay={0.3 + idx * 0.1}>
-                  <p className="flex items-center gap-4 rounded-[2rem] border border-brand/5 bg-white p-6 font-bold text-brand shadow-sm transition-all hover:shadow-md hover:translate-x-2 group">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold/10 text-gold transition-colors group-hover:bg-gold group-hover:text-white">
-                      <CheckCircle2 size={20} />
-                    </span>
-                    {item}
-                  </p>
-                </Reveal>
+          </div>
+
+          <div>
+            <span className="section-tag mb-4">About Our School</span>
+            <h2 className="font-display text-4xl font-bold leading-none tracking-[-0.045em] sm:text-5xl lg:text-6xl">
+              A premium campus for confident learning.
+            </h2>
+            <p className="mt-6 text-lg text-[color:var(--muted)]">
+              We nurture students through clear academic systems, strong teacher guidance,
+              co-curricular exposure, and a caring school culture rooted in discipline,
+              curiosity, and character.
+            </p>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              {[
+                { icon: BookOpen, title: "Smart Classrooms", text: "Interactive learning spaces with modern teaching tools." },
+                { icon: FlaskConical, title: "Modern Labs", text: "Hands-on exploration across science and technology." },
+                { icon: Trophy, title: "Sports", text: "Fitness, teamwork, athletics, and competitive spirit." },
+                { icon: Palette, title: "Arts", text: "Music, performance, visual arts, and self-expression." }
+              ].map((item) => (
+                <TiltCard key={item.title} className="p-5" max={4}>
+                  <div className="grid h-13 w-13 place-items-center rounded-[18px] bg-[var(--brand-faint)] text-[var(--brand)]">
+                    <item.icon size={24} />
+                  </div>
+                  <h3 className="mt-4 font-display text-2xl font-bold tracking-[-0.02em]">{item.title}</h3>
+                  <p className="mt-2 text-sm text-[color:var(--muted)]">{item.text}</p>
+                </TiltCard>
               ))}
             </div>
           </div>
         </div>
-      </Section>
+      </section>
 
-      <section className="bg-white py-12 dark:bg-emerald-950">
-        <div className="container-premium grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((item, idx) => (
-            <Reveal key={item.label} delay={idx * 0.1}>
-              <AnimatedCounter {...item} />
-            </Reveal>
-          ))}
+      <section className="cream-band py-20 lg:py-24">
+        <div className="container-premium">
+          <SectionHeading
+            tag="Admissions Journey"
+            title="Simple steps. Clear guidance."
+            text="From first inquiry to final confirmation, families get a smooth and reassuring admission experience."
+          />
+          <div className="relative grid gap-8 lg:grid-cols-4 lg:gap-5 before:absolute before:left-[9%] before:right-[9%] before:top-[54px] before:hidden before:h-1 before:rounded-full before:bg-[linear-gradient(90deg,var(--brand-pale),var(--brand-mid),var(--gold-soft))] lg:before:block">
+            {admissionSteps.map((step, index) => (
+              <div key={step.title} className="relative text-center">
+                <div className="relative z-10 mx-auto mb-5 grid h-27 w-27 place-items-center rounded-full border-[10px] border-[var(--cream)] bg-[linear-gradient(145deg,var(--brand),var(--brand-mid))] font-display text-4xl font-bold text-[var(--warm)] shadow-[0_24px_52px_rgba(10,61,31,0.22),inset_0_2px_8px_rgba(255,255,255,0.24)]">
+                  {index + 1}
+                </div>
+                <h3 className="font-display text-2xl font-bold tracking-[-0.02em]">{step.title}</h3>
+                <p className="mx-auto mt-3 max-w-56 text-[color:var(--muted)]">{step.text}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      <Section className="bg-white dark:bg-emerald-950" eyebrow="Why Choose Us" title="A refined school experience with measurable care">
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {whyChoose.map((item, index) => (
-            <Reveal key={item.title} delay={index * 0.05}>
-              <Card className="h-full">
-                <item.icon className="mb-6 text-gold" size={34} />
-                <h3 className="font-display text-xl font-bold text-brand">{item.title}</h3>
-                <p className="mt-4 text-sm leading-relaxed text-brand/60">{item.text}</p>
-              </Card>
-            </Reveal>
-          ))}
+      <section className="py-20 lg:py-24">
+        <div className="container-premium">
+          <SectionHeading tag="Academic Wings" title="Learning pathways for every age." />
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {programs.map((item) => (
+              <TiltCard key={item.title} className="p-6" max={4}>
+                <div className="grid h-13 w-13 place-items-center rounded-[18px] bg-[var(--brand-faint)] text-[var(--brand)]">
+                  <item.icon size={24} />
+                </div>
+                <h3 className="mt-5 font-display text-2xl font-bold tracking-[-0.02em]">{item.title}</h3>
+                <p className="mt-3 text-[color:var(--muted)]">{item.text}</p>
+              </TiltCard>
+            ))}
+          </div>
         </div>
-      </Section>
+      </section>
 
-      <Section eyebrow="Academic" title="Wings" className="bg-white dark:bg-white/[0.03]">
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {programs.map((item, idx) => (
-            <Reveal key={item.title} delay={idx * 0.1}>
-              <Card className="group h-full transition-all hover:translate-y-[-8px]">
-                <item.icon className="mb-6 text-brand transition-transform group-hover:scale-110" size={40} />
-                <h3 className="font-display text-2xl font-bold">{item.title}</h3>
-                <p className="mt-4 leading-relaxed text-brand/60">{item.text}</p>
-              </Card>
-            </Reveal>
-          ))}
+      <section className="bg-[var(--brand)] py-20 text-white lg:py-24">
+        <div className="container-premium">
+          <SectionHeading tag="Gallery" title="Moments from school life." text="A visual rhythm for campus, classrooms, clubs, and celebrations." light />
+          <div className="grid auto-rows-[180px] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {galleryTiles.map((tile) => (
+              <div
+                key={tile.label}
+                className={cn(
+                  "group relative grid place-items-center overflow-hidden rounded-[24px] bg-[linear-gradient(135deg,var(--brand-strong),var(--brand-soft))] shadow-[0_22px_60px_rgba(0,0,0,0.2)] transition duration-300 hover:[transform:perspective(800px)_rotateX(5deg)_rotateY(-7deg)_translateZ(12px)] hover:shadow-[0_32px_86px_rgba(0,0,0,0.32)]",
+                  tile.large && "lg:col-span-2 lg:row-span-2"
+                )}
+              >
+                <div className="absolute inset-[-40%] -translate-x-[120%] rotate-12 bg-[linear-gradient(110deg,transparent_35%,rgba(255,255,255,0.32),transparent_65%)] transition-transform duration-700 group-hover:translate-x-[120%]" />
+                <div className="relative z-10 text-center">
+                  <tile.icon className="mx-auto mb-3" size={48} />
+                  <strong className="font-medium">{tile.label}</strong>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </Section>
+      </section>
 
-      <Section className="bg-white dark:bg-emerald-950" eyebrow="Facilities" title="Purpose-built spaces for discovery">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {facilities.slice(0, 6).map((item, idx) => (
-            <Reveal key={item.title} delay={idx * 0.05}>
-              <Card className="group transition-all hover:bg-brand/[0.02]">
-                <item.icon className="mb-4 text-brand transition-colors group-hover:text-gold" />
-                <h3 className="font-display text-xl font-bold">{item.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-brand/60">{item.text}</p>
-              </Card>
-            </Reveal>
-          ))}
+      <section className="py-20 lg:py-24">
+        <div className="container-premium">
+          <SectionHeading tag="News & Events" title="Campus stories with momentum." />
+          <div className="grid gap-5 md:grid-cols-3">
+            {events.map((event, index) => (
+              <TiltCard key={event.title} className="p-0" max={4}>
+                <div className={cn("h-48 rounded-t-[24px]", index === 0 && "bg-[linear-gradient(135deg,var(--brand),var(--brand-soft))]", index === 1 && "bg-[linear-gradient(135deg,var(--gold),var(--gold-soft))]", index === 2 && "bg-[linear-gradient(135deg,#b64d73,#ffd0df)]")} />
+                <div className="p-6">
+                  <span className="rounded-full bg-[rgba(10,61,31,0.08)] px-3 py-2 text-xs font-medium text-[var(--brand)]">{event.date}</span>
+                  <h3 className="mt-5 font-display text-2xl font-bold tracking-[-0.02em]">{event.title}</h3>
+                  <p className="mt-3 text-[color:var(--muted)]">{event.text}</p>
+                </div>
+              </TiltCard>
+            ))}
+          </div>
         </div>
-      </Section>
+      </section>
 
-      <Section eyebrow="Leadership" title="Message" className="bg-white dark:bg-emerald-950">
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {["Founder Vision", "Director Message", "Principal Message"].map((title, index) => (
-            <Card key={title}>
-              <PlaceholderImage title={title} tone={["from-emerald-800 to-amber-400", "from-emerald-700 to-lime-500", "from-green-900 to-emerald-500"][index]} className="mb-5 min-h-[260px]" />
-              <Quote className="mb-4 text-emerald-700" />
-              <h3 className="font-display text-xl font-bold">{title}</h3>
-              <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">Our leadership is committed to discipline, dedication, holistic development, and a school culture where every learner feels guided.</p>
-            </Card>
-          ))}
+      <section className="cream-band py-20 lg:py-24">
+        <div className="container-premium">
+          <SectionHeading tag="Testimonials" title="Trusted by parents and students." />
+          <div className="grid gap-5 md:grid-cols-3">
+            {testimonials.map((item) => (
+              <TiltCard key={item.name} className="min-h-[300px] p-6" max={4}>
+                <div className="grid h-13 w-13 place-items-center rounded-[18px] bg-[var(--brand-faint)] text-[var(--brand)]">
+                  <Quote size={24} />
+                </div>
+                <p className="mt-5 text-[color:var(--muted)]">&quot;{item.text}&quot;</p>
+                <div className="mt-8 flex items-center gap-3">
+                  <span className="grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-[var(--gold-soft)] to-[var(--brand-soft)] font-medium text-[var(--brand)]">
+                    {item.name.split(" ").map((part) => part[0]).join("")}
+                  </span>
+                  <span>
+                    <strong className="block font-medium text-[var(--brand)]">{item.name}</strong>
+                    <span className="text-sm text-[color:var(--muted)]">{item.role}</span>
+                  </span>
+                </div>
+              </TiltCard>
+            ))}
+          </div>
         </div>
-      </Section>
+      </section>
 
-      <Section className="bg-brand text-white">
-        <div className="grid items-center gap-12 lg:grid-cols-[0.8fr_1.2fr]">
-          <PlaceholderImage title="Principal" tone="from-brand-dark to-brand" className="min-h-[400px] rounded-[2.5rem] shadow-2xl" />
+      <section className="py-20 lg:py-24">
+        <div className="container-premium grid items-start gap-10 lg:grid-cols-[.9fr_1.1fr]">
           <div>
-            <Quote className="mb-8 text-gold" size={48} />
-            <h2 className="font-display text-4xl font-medium sm:text-5xl lg:text-6xl leading-tight">From the Principal’s Desk</h2>
-            <p className="mt-8 text-lg leading-relaxed text-white/80">Our promise is simple: to know every child, stretch every learner, and nurture the habits of excellence that make young people ready for life beyond school.</p>
-            <div className="mt-8">
-              <p className="font-display text-xl font-bold text-gold">Mrs. Shobha Sharma</p>
-              <p className="text-sm font-bold tracking-widest text-white/40 uppercase mt-1">Principal, AGRA CITIZEN SCHOOL</p>
+            <span className="section-tag mb-4">Contact</span>
+            <h2 className="font-display text-4xl font-bold leading-none tracking-[-0.045em] sm:text-5xl lg:text-6xl">
+              Start the admission conversation.
+            </h2>
+            <p className="mt-6 text-lg text-[color:var(--muted)]">
+              Visit the campus, speak to our office team, or send a quick inquiry.
+            </p>
+            <div className="mt-8 grid gap-4">
+              {[
+                ["Address", "Agra Citizen School, Agra, Uttar Pradesh"],
+                ["Phone", "+91 98765 43210"],
+                ["Email", "info@agracitizenschool.edu.in"],
+                ["Hours", "Monday to Saturday, 8:00 AM - 3:00 PM"]
+              ].map(([label, value]) => (
+                <div key={label} className="rounded-[22px] bg-[rgba(223,245,232,0.6)] p-5">
+                  <strong className="block font-medium text-[var(--brand)]">{label}</strong>
+                  <span className="text-[color:var(--muted)]">{value}</span>
+                </div>
+              ))}
             </div>
           </div>
+          <InquiryForm />
         </div>
-      </Section>
-
-      <Section eyebrow="News & Highlights" title="Latest from campus">
-        <div className="grid gap-5 md:grid-cols-3">{events.map((event) => <Card key={event.title}><p className="mb-4 inline-flex rounded-full bg-emerald-100 px-4 py-2 text-sm font-black text-emerald-800">{event.date}</p><h3 className="font-display text-xl font-bold">{event.title}</h3><p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">{event.text}</p></Card>)}</div>
-      </Section>
-
-      <Section eyebrow="Testimonials" title="Trusted by families and alumni" className="bg-white dark:bg-white/[0.03]">
-        <div className="grid gap-5 md:grid-cols-3">{testimonials.map((item) => <Card key={item.name}><p className="leading-7 text-[color:var(--muted)]">“{item.text}”</p><p className="mt-5 font-display font-bold">{item.name}</p><p className="text-sm text-emerald-700 dark:text-emerald-300">{item.role}</p></Card>)}</div>
-      </Section>
-
-      <Section className="bg-white dark:bg-emerald-950" eyebrow="Gallery" title="Moments from campus">
-        <div className="grid gap-5 md:grid-cols-3">{["Assembly", "Sports", "Laboratory"].map((title, i) => <PlaceholderImage key={title} title={title} tone={["from-emerald-800 to-lime-500", "from-teal-700 to-amber-500", "from-green-900 to-sky-500"][i]} className="min-h-[320px]" />)}</div>
-      </Section>
-
-      <Section className="bg-brand text-white text-center">
-        <div className="mx-auto max-w-4xl py-12">
-          <p className="mb-6 text-xs font-black uppercase tracking-[0.4em] text-gold">Admissions Open 2026-27</p>
-          <h2 className="font-display text-5xl font-medium sm:text-6xl lg:text-7xl leading-tight">Begin your child’s journey with AGRA CITIZEN SCHOOL</h2>
-          <p className="mt-8 text-lg text-white/70 max-w-2xl mx-auto">Explore programs, visit the campus, and speak with our admissions team to experience the elite difference.</p>
-          <div className="mt-12 flex justify-center gap-4">
-            <Button href="/admissions" className="bg-gold text-white hover:bg-gold/90 px-10 py-5 rounded-full text-lg font-bold shadow-2xl">
-              Start Admission Inquiry
-            </Button>
-          </div>
-        </div>
-      </Section>
-
-      <Section className="bg-white dark:bg-emerald-950" eyebrow="Contact" title="Plan a visit or ask a question">
-        <div className="grid items-start gap-8 lg:grid-cols-[.8fr_1.2fr]">
-          <Card>
-            <h3 className="font-display text-2xl font-bold">Admissions Office</h3>
-            <p className="mt-4 leading-8 text-[color:var(--muted)]">Share a few details and our team will help you with campus visits, class availability, admission requirements, and next steps.</p>
-            <div className="mt-6 grid gap-3 text-sm font-semibold">
-              <p>Phone: +91 98765 43210</p>
-              <p>Email: info@agracitizenschool.edu.in</p>
-              <p>Location: Agra, Uttar Pradesh</p>
-            </div>
-          </Card>
-          <InquiryForm compact />
-        </div>
-      </Section>
+      </section>
     </>
   );
 }

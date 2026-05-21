@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, ChevronDown, Facebook, Instagram, Menu, Moon, Phone, Sun, X, Youtube } from "lucide-react";
+import { ChevronDown, Facebook, Instagram, Menu, Moon, Sun, X, Youtube } from "lucide-react";
 import { useEffect, useState } from "react";
 import { LogoLockup } from "@/components/brand/Logo";
 import { navItems } from "@/lib/data";
@@ -33,69 +33,146 @@ export function Navbar() {
   useEffect(() => setOpen(false), [pathname]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
-      <nav className={cn("transition-all duration-300 py-2", scrolled ? "bg-white/90 text-brand shadow-sm backdrop-blur-md border-b border-brand/5" : "bg-transparent text-brand")}>
-        <div className="container-wide flex h-16 items-center justify-between">
-        <Link href="/" className="flex items-center gap-3" aria-label="AGRA CITIZEN SCHOOL home">
-          <LogoLockup />
-        </Link>
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
+      <div className="container-premium pt-4">
+        <div
+          className={cn(
+            "glass pointer-events-auto relative flex items-center justify-between gap-5 rounded-full px-4 py-3 transition-all duration-300",
+            scrolled ? "translate-y-0" : "translate-y-1"
+          )}
+        >
+          <Link href="/" className="min-w-max" aria-label="AGRA CITIZEN SCHOOL home">
+            <LogoLockup />
+          </Link>
 
-        <div className="hidden items-center gap-8 lg:flex ml-12">
-          {navItems.map((item) => (
-            <div key={item.href} className="relative" onMouseEnter={() => item.label === "Academics" && setDropOpen(true)} onMouseLeave={() => setDropOpen(false)}>
-              <Link
-                href={item.href}
-                className={cn("group relative inline-flex items-center gap-1 px-2 py-2 text-[13px] font-bold tracking-[0.2em] uppercase transition-colors link-underline", pathname === item.href ? "text-brand" : "text-brand/50 hover:text-brand")}
+          <div className="hidden items-center gap-1 lg:flex">
+            {navItems.map((item) => (
+              <div
+                key={item.href}
+                className="relative"
+                onMouseEnter={() => item.label === "Academics" && setDropOpen(true)}
+                onMouseLeave={() => setDropOpen(false)}
               >
-                {item.label}
-                {item.label === "Academics" && <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />}
-                <span className={cn("absolute bottom-0 left-0 h-0.5 w-full bg-gold scale-x-0 transition-transform duration-500 origin-left group-hover:scale-x-100", pathname === item.href && "scale-x-100")} />
-              </Link>
-              {item.label === "Academics" && (
-                <AnimatePresence>
-                  {dropOpen && (
-                    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} className="absolute left-0 top-11 w-48 rounded-2xl border border-brand/10 bg-white p-2 shadow-xl">
-                      {dropdown.map((drop) => (
-                        <Link key={drop.href} href={drop.href} className="block rounded-xl px-3 py-2 text-sm font-semibold hover:bg-brand/5">
-                          {drop.label}
-                        </Link>
-                      ))}
-                    </motion.div>
+                <Link
+                  href={item.href}
+                  className={cn(
+                    "inline-flex items-center gap-1 rounded-full px-3 py-2 text-sm font-medium transition",
+                    pathname === item.href
+                      ? "bg-[var(--gold-soft)] text-[var(--brand)]"
+                      : "text-[color:var(--muted)] hover:bg-[var(--brand-faint)] hover:text-[var(--brand)]"
                   )}
-                </AnimatePresence>
-              )}
-            </div>
-          ))}
-        </div>
+                >
+                  {item.label}
+                  {item.label === "Academics" && <ChevronDown size={14} />}
+                </Link>
+                {item.label === "Academics" && (
+                  <AnimatePresence>
+                    {dropOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 8 }}
+                        className="soft-card absolute left-0 top-11 w-48 p-2"
+                      >
+                        {dropdown.map((drop) => (
+                          <Link
+                            key={drop.href}
+                            href={drop.href}
+                            className="block rounded-xl px-3 py-2 text-sm font-medium text-[var(--brand)] hover:bg-[var(--brand-faint)]"
+                          >
+                            {drop.label}
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                )}
+              </div>
+            ))}
+          </div>
 
-        <div className="flex items-center gap-4">
-          <button aria-label="Toggle dark mode" onClick={toggleTheme} className="grid h-10 w-10 place-items-center rounded-full border border-brand/10 bg-white/50 text-brand hover:bg-white transition shadow-sm">
-            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-          <button aria-label="Open menu" onClick={() => setOpen(true)} className="grid h-10 w-10 place-items-center rounded-full bg-brand text-white lg:hidden shadow-md">
-            <Menu size={20} />
-          </button>
+          <div className="flex items-center gap-2">
+            <div className="hidden items-center gap-3 text-[var(--brand-strong)] lg:flex">
+              <Facebook size={16} />
+              <Instagram size={16} />
+              <Youtube size={17} />
+            </div>
+            <Link
+              href="/admissions"
+              className="hidden rounded-full bg-[linear-gradient(135deg,var(--brand),var(--brand-strong))] px-5 py-3 text-sm font-medium text-[var(--warm)] shadow-[0_16px_32px_rgba(10,61,31,0.22)] lg:inline-flex"
+            >
+              Admissions Open -&gt;
+            </Link>
+            <button
+              aria-label="Toggle dark mode"
+              onClick={toggleTheme}
+              className="grid h-11 w-11 place-items-center rounded-full border border-[rgba(10,61,31,0.1)] bg-white/80 text-[var(--brand)] shadow-sm backdrop-blur transition hover:bg-white dark:border-white/10 dark:bg-white/10 dark:text-white"
+            >
+              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+            <button
+              aria-label="Open menu"
+              onClick={() => setOpen(true)}
+              className="grid h-11 w-11 place-items-center rounded-full bg-[var(--brand)] text-[var(--warm)] lg:hidden"
+            >
+              <Menu size={20} />
+            </button>
+          </div>
+
+          <div className="pointer-events-none absolute left-1/2 top-[calc(100%+10px)] hidden -translate-x-1/2 items-center gap-2 rounded-full border border-[rgba(240,216,122,0.35)] bg-[rgba(10,61,31,0.92)] px-4 py-2 text-xs font-medium text-[var(--warm)] shadow-[0_18px_45px_rgba(10,61,31,0.22)] lg:flex">
+            <span className="text-[var(--gold-soft)]">Admissions Open 2025-26</span>
+            <span>Limited seats available for early applicants</span>
+          </div>
         </div>
-        </div>
-      </nav>
+      </div>
 
       <AnimatePresence>
         {open && (
-          <motion.div className="fixed inset-0 z-50 bg-emerald-950/55 backdrop-blur-sm lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <motion.div initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ type: "spring", damping: 24 }} className="ml-auto h-full w-[86%] max-w-sm bg-white p-5 shadow-2xl dark:bg-emerald-950">
+          <motion.div
+            className="fixed inset-0 z-50 bg-[rgba(10,61,31,0.48)] backdrop-blur-sm lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 24 }}
+              className="ml-auto h-full w-[86%] max-w-sm rounded-l-[28px] bg-[var(--warm)] p-5 shadow-2xl dark:bg-emerald-950"
+            >
               <div className="mb-6 flex items-center justify-between">
-                <span className="font-display text-lg font-black">AGRA CITIZEN SCHOOL</span>
-                <button aria-label="Close menu" onClick={() => setOpen(false)} className="grid h-10 w-10 place-items-center rounded-full bg-emerald-50 dark:bg-white/10">
+                <LogoLockup />
+                <button
+                  aria-label="Close menu"
+                  onClick={() => setOpen(false)}
+                  className="grid h-10 w-10 place-items-center rounded-full bg-[var(--brand-faint)] text-[var(--brand)] dark:bg-white/10"
+                >
                   <X size={20} />
                 </button>
               </div>
               <div className="grid gap-2">
                 {navItems.map((item) => (
-                  <Link key={item.href} href={item.href} className={cn("rounded-2xl px-4 py-3 text-base font-semibold", pathname === item.href ? "bg-emerald-700 text-white" : "bg-emerald-50 text-emerald-950 dark:bg-white/10 dark:text-white")}>
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "rounded-2xl px-4 py-3 text-base font-medium",
+                      pathname === item.href
+                        ? "bg-[var(--brand)] text-[var(--warm)]"
+                        : "bg-white text-[var(--brand)] dark:bg-white/10 dark:text-white"
+                    )}
+                  >
                     {item.label}
                   </Link>
                 ))}
               </div>
+              <Link
+                href="/admissions"
+                className="mt-5 inline-flex rounded-full bg-[linear-gradient(135deg,var(--brand),var(--brand-strong))] px-5 py-3 text-sm font-medium text-[var(--warm)]"
+              >
+                Admissions Open -&gt;
+              </Link>
             </motion.div>
           </motion.div>
         )}

@@ -5,20 +5,30 @@ import { contact, navItems } from "@/lib/data";
 
 export function Footer() {
   return (
-    <footer className="bg-emerald-950 text-white">
-      <div className="container-premium grid gap-10 py-14 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+    <footer className="bg-[var(--brand)] text-white">
+      <div className="container-premium grid gap-10 py-18 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
           <div className="mb-5 flex items-center gap-3">
             <LogoMark />
             <div>
-              <p className="font-display font-black tracking-[0.12em]">AGRA CITIZEN SCHOOL</p>
-              <p className="text-sm text-emerald-100">Excellence with character</p>
+              <p className="font-display text-2xl font-bold tracking-[-0.045em] text-[var(--warm)]">
+                Agra Citizen School
+              </p>
+              <p className="text-sm font-medium text-white/65">Agra, Uttar Pradesh</p>
             </div>
           </div>
-          <p className="max-w-sm text-sm leading-7 text-emerald-100">A premium school experience built around academic ambition, personal care, modern facilities, and values that stay with students for life.</p>
+          <p className="max-w-sm text-sm leading-7 text-white/55">
+            Premium education in Agra, Uttar Pradesh, designed for excellence, character,
+            and modern confidence.
+          </p>
           <div className="mt-5 flex gap-3">
             {[Facebook, Instagram, Linkedin].map((Icon, index) => (
-              <a key={index} href="#" aria-label="Social media" className="grid h-10 w-10 place-items-center rounded-full bg-white/10 transition hover:bg-emerald-500 hover:text-emerald-950">
+              <a
+                key={index}
+                href="#"
+                aria-label="Social media"
+                className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white/70 transition hover:bg-[var(--brand-soft)] hover:text-[var(--brand)]"
+              >
                 <Icon size={18} />
               </a>
             ))}
@@ -26,10 +36,14 @@ export function Footer() {
         </div>
 
         <div>
-          <h3 className="mb-4 font-display text-lg font-bold">Quick Links</h3>
+          <h3 className="mb-4 font-display text-xl font-bold text-[var(--warm)]">Explore</h3>
           <div className="grid gap-2">
             {navItems.slice(0, 6).map((item) => (
-              <Link key={item.href} href={item.href} className="text-sm text-emerald-100 transition hover:text-white">
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-sm text-white/55 transition hover:text-[var(--brand-soft)]"
+              >
                 {item.label}
               </Link>
             ))}
@@ -37,26 +51,53 @@ export function Footer() {
         </div>
 
         <div>
-          <h3 className="mb-4 font-display text-lg font-bold">Contact</h3>
-          <div className="grid gap-3 text-sm text-emerald-100">
-            <p className="flex gap-3"><MapPin size={18} />{contact.address}</p>
-            <p className="flex gap-3"><Phone size={18} />{contact.phone}</p>
-            <p className="flex gap-3"><Mail size={18} />{contact.email}</p>
+          <h3 className="mb-4 font-display text-xl font-bold text-[var(--warm)]">Admissions</h3>
+          <div className="grid gap-2 text-sm text-white/55">
+            <Link href="/contact" className="transition hover:text-[var(--brand-soft)]">
+              Apply
+            </Link>
+            <Link href="/contact" className="transition hover:text-[var(--brand-soft)]">
+              Visit Campus
+            </Link>
+            <Link href="/contact" className="transition hover:text-[var(--brand-soft)]">
+              Fee Inquiry
+            </Link>
           </div>
         </div>
 
         <div>
-          <h3 className="mb-4 font-display text-lg font-bold">Newsletter</h3>
-          <p className="mb-4 text-sm leading-7 text-emerald-100">Get admission updates, events, and campus news.</p>
-          <form className="flex overflow-hidden rounded-full bg-white p-1">
-            <input aria-label="Email" className="min-w-0 flex-1 bg-transparent px-4 text-sm text-emerald-950 outline-none" placeholder="Email address" type="email" />
-            <button aria-label="Subscribe" className="grid h-11 w-11 place-items-center rounded-full bg-emerald-700 text-white">
+          <h3 className="mb-4 font-display text-xl font-bold text-[var(--warm)]">Connect</h3>
+          <div className="grid gap-3 text-sm text-white/55">
+            <p className="flex gap-3">
+              <MapPin size={18} />
+              {contact.address}
+            </p>
+            <p className="flex gap-3">
+              <Phone size={18} />
+              {contact.phone}
+            </p>
+            <p className="flex gap-3">
+              <Mail size={18} />
+              {contact.email}
+            </p>
+          </div>
+          <form className="mt-5 flex overflow-hidden rounded-full bg-white p-1">
+            <input
+              aria-label="Email"
+              className="min-w-0 flex-1 bg-transparent px-4 text-sm text-[var(--brand)] outline-none"
+              placeholder="Email address"
+              type="email"
+            />
+            <button
+              aria-label="Subscribe"
+              className="grid h-11 w-11 place-items-center rounded-full bg-[var(--brand)] text-[var(--warm)]"
+            >
               <Send size={17} />
             </button>
           </form>
         </div>
       </div>
-      <div className="border-t border-white/10 py-5 text-center text-sm text-emerald-100">
+      <div className="border-t border-white/10 py-5 text-center text-sm text-white/55">
         © {new Date().getFullYear()} AGRA CITIZEN SCHOOL. All rights reserved.
       </div>
     </footer>
