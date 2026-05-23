@@ -1,64 +1,146 @@
 "use client";
 
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { inquirySchema, type InquirySchema } from "@/lib/schemas/inquiry";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
-const fields = [
-  { name: "name", label: "Name", type: "text" },
-  { name: "parent", label: "Parent name", type: "text" },
-  { name: "phone", label: "Phone", type: "tel" },
-  { name: "email", label: "Email", type: "email" },
-  { name: "className", label: "Class", type: "text" }
-];
-
 export function InquiryForm({ compact = false }: { compact?: boolean }) {
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [statusMode, setStatusMode] = useState<"idle" | "success" | "error">("idle");
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const nextErrors: Record<string, string> = {};
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<InquirySchema>({
+    resolver: zodResolver(inquirySchema),
+    defaultValues: {
+      name: "",
+      parent: "",
+      phone: "",
+      email: "",
+      className: "",
+      message: "",
+    },
+  });
 
-    fields.forEach((field) => {
-      if (!String(form.get(field.name) ?? "").trim()) nextErrors[field.name] = `${field.label} is required`;
-    });
+  async function onSubmit(values: InquirySchema) {
+    setStatusMode("idle");
+    setStatusMessage(null);
 
-    const email = String(form.get("email") ?? "");
-    const phone = String(form.get("phone") ?? "");
-    if (email && !/^\S+@\S+\.\S+$/.test(email)) nextErrors.email = "Enter a valid email";
-    if (phone && !/^[0-9+\-\s]{8,16}$/.test(phone)) nextErrors.phone = "Enter a valid phone number";
+    try {
+      const response = await fetch("/api/inquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
 
-    setErrors(nextErrors);
-    if (Object.keys(nextErrors).length) return;
+      const payload = await response.json();
+      if (!response.ok) {
+        const error = typeof payload === "object" && payload?.error ? payload.error : "Submission failed.";
+        setStatusMode("error");
+        setStatusMessage(Array.isArray(error) ? "Submission failed." : String(error));
+        return;
+      }
 
-    setLoading(true);
-    window.setTimeout(() => {
-      setLoading(false);
-      setSuccess(true);
-      event.currentTarget.reset();
-    }, 900);
+      setStatusMode("success");
+      setStatusMessage("Your inquiry has been sent. We will contact you shortly.");
+      reset();
+    } catch (error) {
+      setStatusMode("error");
+      setStatusMessage("Unable to submit the inquiry at this time. Please try again later.");
+      console.error("Inquiry submission error:", error);
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit} className={cn("grid gap-4 rounded-2xl border border-emerald-900/10 bg-white p-5 shadow-xl shadow-emerald-950/5 dark:border-white/10 dark:bg-white/[0.06]", !compact && "sm:p-8")}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className={cn(
+        "grid gap-4 rounded-2xl border border-emerald-900/10 bg-white p-5 shadow-xl shadow-emerald-950/5 dark:border-white/10 dark:bg-white/[0.06]",
+        !compact && "sm:p-8"
+      )}
+    >
       <div className="grid gap-4 sm:grid-cols-2">
-        {fields.map((field) => (
-          <label key={field.name} className="grid gap-2 text-sm font-semibold">
-            {field.label}
-            <input name={field.name} type={field.type} className="min-h-12 rounded-xl border border-emerald-900/10 bg-white px-4 outline-none transition focus:border-emerald-600 dark:border-white/10 dark:bg-white/10" />
-            {errors[field.name] && <span className="text-xs text-red-600">{errors[field.name]}</span>}
-          </label>
-        ))}
+        <label className="grid gap-2 text-sm font-semibold">
+          Name
+          <input
+            {...register("name")}
+            type="text"
+            className="min-h-12 rounded-xl border border-emerald-900/10 bg-white px-4 outline-none transition focus:border-emerald-600 dark:border-white/10 dark:bg-white/10"
+          />
+          {errors.name?.message && <span className="text-xs text-red-600">{errors.name.message}</span>}
+        </label>
+        <label className="grid gap-2 text-sm font-semibold">
+          Parent name
+          <input
+            {...register("parent")}
+            type="text"
+            className="min-h-12 rounded-xl border border-emerald-900/10 bg-white px-4 outline-none transition focus:border-emerald-600 dark:border-white/10 dark:bg-white/10"
+          />
+          {errors.parent?.message && <span className="text-xs text-red-600">{errors.parent.message}</span>}
+        </label>
+        <label className="grid gap-2 text-sm font-semibold">
+          Phone
+          <input
+            {...register("phone")}
+            type="tel"
+            className="min-h-12 rounded-xl border border-emerald-900/10 bg-white px-4 outline-none transition focus:border-emerald-600 dark:border-white/10 dark:bg-white/10"
+          />
+          {errors.phone?.message && <span className="text-xs text-red-600">{errors.phone.message}</span>}
+        </label>
+        <label className="grid gap-2 text-sm font-semibold">
+          Email
+          <input
+            {...register("email")}
+            type="email"
+            className="min-h-12 rounded-xl border border-emerald-900/10 bg-white px-4 outline-none transition focus:border-emerald-600 dark:border-white/10 dark:bg-white/10"
+          />
+          {errors.email?.message && <span className="text-xs text-red-600">{errors.email.message}</span>}
+        </label>
+        <label className="grid gap-2 text-sm font-semibold sm:col-span-2">
+          Class
+          <input
+            {...register("className")}
+            type="text"
+            className="min-h-12 rounded-xl border border-emerald-900/10 bg-white px-4 outline-none transition focus:border-emerald-600 dark:border-white/10 dark:bg-white/10"
+          />
+          {errors.className?.message && <span className="text-xs text-red-600">{errors.className.message}</span>}
+        </label>
       </div>
+
       <label className="grid gap-2 text-sm font-semibold">
         Message
-        <textarea name="message" rows={compact ? 3 : 5} className="rounded-xl border border-emerald-900/10 bg-white px-4 py-3 outline-none transition focus:border-emerald-600 dark:border-white/10 dark:bg-white/10" />
+        <textarea
+          {...register("message")}
+          rows={compact ? 3 : 5}
+          className="rounded-xl border border-emerald-900/10 bg-white px-4 py-3 outline-none transition focus:border-emerald-600 dark:border-white/10 dark:bg-white/10"
+        />
+        {errors.message?.message && <span className="text-xs text-red-600">{errors.message.message}</span>}
       </label>
-      <Button type="submit" disabled={loading}>{loading ? "Submitting..." : "Submit Inquiry"}</Button>
-      {success && <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-200">Thank you. Our admissions team will contact you shortly.</p>}
+
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? "Submitting..." : "Submit Inquiry"}
+      </Button>
+
+      {statusMessage ? (
+        <p
+          className={cn(
+            "rounded-xl px-4 py-3 text-sm font-semibold",
+            statusMode === "success"
+              ? "bg-emerald-50 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-200"
+              : "bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-200"
+          )}
+          role="status"
+          aria-live="polite"
+        >
+          {statusMessage}
+        </p>
+      ) : null}
     </form>
   );
 }

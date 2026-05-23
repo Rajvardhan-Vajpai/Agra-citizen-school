@@ -148,7 +148,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <Section className="bg-white relative dark:bg-emerald-950" eyebrow="About" title="AGRA CITIZEN SCHOOL" text="A premier school in Agra focused on academic discipline, holistic growth, and a safe, inclusive learning environment.">
+      <Section className="bg-white relative" eyebrow="About" title="AGRA CITIZEN SCHOOL" text="A premier school in Agra focused on academic discipline, holistic growth, and a safe, inclusive learning environment.">
         <div className="grid items-center gap-16 lg:grid-cols-[.95fr_1.05fr]">
           <Reveal>
             <div className="relative group">
@@ -176,7 +176,7 @@ export function HomePage() {
         </div>
       </Section>
 
-      <section className="bg-white py-12 dark:bg-emerald-950">
+      <section className="bg-white py-12">
         <div className="container-premium grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((item, idx) => (
             <Reveal key={item.label} delay={idx * 0.1}>
@@ -186,7 +186,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <Section className="bg-white dark:bg-emerald-950" eyebrow="Why Choose Us" title="A refined school experience with measurable care">
+      <Section className="bg-white" eyebrow="Why Choose Us" title="A refined school experience with measurable care">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {whyChoose.map((item, index) => (
             <Reveal key={item.title} delay={index * 0.05}>
@@ -200,7 +200,7 @@ export function HomePage() {
         </div>
       </Section>
 
-      <Section eyebrow="Academic" title="Wings" className="bg-white dark:bg-white/[0.03]">
+      <Section eyebrow="Academic" title="Wings" className="bg-white">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {programs.map((item, idx) => (
             <Reveal key={item.title} delay={idx * 0.1}>
@@ -214,7 +214,7 @@ export function HomePage() {
         </div>
       </Section>
 
-      <Section className="bg-white dark:bg-emerald-950" eyebrow="Facilities" title="Purpose-built spaces for discovery">
+      <Section className="bg-white" eyebrow="Facilities" title="Purpose-built spaces for discovery">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {facilities.slice(0, 6).map((item, idx) => (
             <Reveal key={item.title} delay={idx * 0.05}>
@@ -228,7 +228,7 @@ export function HomePage() {
         </div>
       </Section>
 
-      <Section eyebrow="Leadership" title="Message" className="bg-white dark:bg-emerald-950">
+      <Section eyebrow="Leadership" title="Message" className="bg-white">
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {["Founder Vision", "Director Message", "Principal Message"].map((title, index) => (
             <Card key={title}>
@@ -260,11 +260,11 @@ export function HomePage() {
         <div className="grid gap-5 md:grid-cols-3">{events.map((event) => <Card key={event.title}><p className="mb-4 inline-flex rounded-full bg-emerald-100 px-4 py-2 text-sm font-black text-emerald-800">{event.date}</p><h3 className="font-display text-xl font-bold">{event.title}</h3><p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">{event.text}</p></Card>)}</div>
       </Section>
 
-      <Section eyebrow="Testimonials" title="Trusted by families and alumni" className="bg-white dark:bg-white/[0.03]">
-        <div className="grid gap-5 md:grid-cols-3">{testimonials.map((item) => <Card key={item.name}><p className="leading-7 text-[color:var(--muted)]">“{item.text}”</p><p className="mt-5 font-display font-bold">{item.name}</p><p className="text-sm text-emerald-700 dark:text-emerald-300">{item.role}</p></Card>)}</div>
+      <Section eyebrow="Testimonials" title="Trusted by families and alumni" className="bg-white">
+        <div className="grid gap-5 md:grid-cols-3">{testimonials.map((item) => <Card key={item.name}><p className="leading-7 text-[color:var(--muted)]">“{item.text}”</p><p className="mt-5 font-display font-bold">{item.name}</p><p className="text-sm text-emerald-700">{item.role}</p></Card>)}</div>
       </Section>
 
-      <Section className="bg-white dark:bg-emerald-950" eyebrow="Gallery" title="Moments from campus">
+      <Section className="bg-white" eyebrow="Gallery" title="Moments from campus">
         <div className="grid gap-5 md:grid-cols-3">{["Assembly", "Sports", "Laboratory"].map((title, i) => <PlaceholderImage key={title} title={title} tone={["from-emerald-800 to-lime-500", "from-teal-700 to-amber-500", "from-green-900 to-sky-500"][i]} className="min-h-[320px]" />)}</div>
       </Section>
 
@@ -281,7 +281,7 @@ export function HomePage() {
         </div>
       </Section>
 
-      <Section className="bg-white dark:bg-emerald-950" eyebrow="Contact" title="Plan a visit or ask a question">
+      <Section className="bg-white" eyebrow="Contact" title="Plan a visit or ask a question">
         <div className="grid items-start gap-8 lg:grid-cols-[.8fr_1.2fr]">
           <Card>
             <h3 className="font-display text-2xl font-bold">Admissions Office</h3>

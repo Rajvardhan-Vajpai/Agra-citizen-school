@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 export function PlaceholderImage({ title, className, tone = "from-emerald-800 via-emerald-600 to-lime-500" }: { title: string; className?: string; tone?: string }) {
   return (
-    <div className={cn("relative overflow-hidden rounded-2xl border border-emerald-900/10 bg-white shadow-xl shadow-emerald-950/8 dark:border-white/10 dark:bg-white/[0.06]", className)}>
+    <div className={cn("relative overflow-hidden rounded-2xl border border-emerald-900/10 bg-white shadow-xl shadow-emerald-950/8", className)}>
       <div className={cn("absolute inset-x-0 top-0 h-2/3 bg-gradient-to-br", tone)} />
       <div className="absolute inset-0 hero-grid opacity-25" />
       <div className="absolute right-8 top-8 h-20 w-20 rounded-full bg-amber-300 shadow-[0_0_55px_rgba(252,211,77,.65)]" />
@@ -20,11 +20,11 @@ export function PlaceholderImage({ title, className, tone = "from-emerald-800 vi
           </span>
         ))}
       </div>
-      <div className="absolute inset-x-0 bottom-0 bg-white p-6 dark:bg-emerald-950">
+      <div className="absolute inset-x-0 bottom-0 bg-white p-6">
         <div className="mb-4 h-2 w-28 rounded-full bg-emerald-600" />
-        <div className="rounded-xl border border-emerald-900/10 bg-emerald-50/60 px-4 py-3 dark:border-white/10 dark:bg-white/10">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700 dark:text-emerald-300">AI sample visual</p>
-          <p className="font-display text-xl font-bold text-emerald-950 dark:text-white">{title}</p>
+        <div className="rounded-xl border border-emerald-900/10 bg-emerald-50/60 px-4 py-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">AI sample visual</p>
+          <p className="font-display text-xl font-bold text-emerald-950">{title}</p>
         </div>
       </div>
     </div>

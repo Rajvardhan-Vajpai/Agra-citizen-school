@@ -14,3 +14,5 @@ pnpm-debug.log*
 *.tsbuildinfo
 preview-*.png
 single-page-preview*.png
+
+/lib/generated/prisma

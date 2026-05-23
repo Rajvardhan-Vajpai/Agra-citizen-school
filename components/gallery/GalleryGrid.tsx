@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { useMemo, useState } from "react";
-import { galleryItems } from "@/lib/data";
+import { galleryItems } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
 const categories = ["All", ...galleryItems.map((item) => item.category)];

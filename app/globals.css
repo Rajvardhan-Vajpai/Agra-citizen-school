@@ -44,7 +44,7 @@ main {
 }
 
 .dark main {
-  background: #07140f;
+  background: var(--background);
 }
 
 ::selection {

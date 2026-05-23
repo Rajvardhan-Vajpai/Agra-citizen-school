@@ -10,9 +10,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
-    const stored = window.localStorage.getItem("acs-theme") as Theme | null;
-    const preferred = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    setTheme(stored ?? preferred);
+    // Always start in light theme for a clean professional look.
+    setTheme("light");
   }, []);
 
   useEffect(() => {

@@ -1,0 +1,157 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Inquiry Model - For admission/contact inquiries
+model Inquiry {
+  id        String   @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String
+  phone     String
+  subject   String
+  message   String
+  status    String   @default("pending") // pending, reviewed, responded
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+}
+
+// Event Model - School events and activities
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  startDate   DateTime
+  endDate     DateTime?
+  location    String
+  imageUrl    String?
+  category    String   @default("general") // academic, sports, cultural, general
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([startDate])
+  @@index([category])
+  @@index([published])
+}
+
+// Notice Model - School announcements and notices
+model Notice {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  type      String   @default("general") // important, tender, result, holiday, general
+  priority  Int      @default(0)
+  published Boolean  @default(false)
+  expiryDate DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([type])
+  @@index([published])
+  @@index([expiryDate])
+}
+
+// Gallery Model - Photo gallery management
+model Gallery {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  imageUrl    String
+  category    String   @default("general") // events, academics, sports, facilities, general
+  published   Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category])
+  @@index([published])
+}
+
+// Student Model - For future student portal
+model Student {
+  id            String   @id @default(cuid())
+  rollNumber    String   @unique
+  firstName     String
+  lastName      String
+  email         String
+  phone         String?
+  class         String
+  parentEmail   String
+  parentPhone   String
+  dateOfBirth   DateTime?
+  address       String?
+  enrollmentDate DateTime @default(now())
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([class])
+  @@index([rollNumber])
+  @@index([active])
+}
+
+// User Model - For admin authentication
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("admin") // admin, teacher, staff
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([role])
+  @@index([active])
+}
+
+// Blog Model - For school news and articles
+model Blog {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  content   String
+  excerpt   String?
+  imageUrl  String?
+  author    String
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([published])
+  @@index([slug])
+}
+
+// Alumni Model - For alumni management
+model Alumni {
+  id            String   @id @default(cuid())
+  firstName     String
+  lastName      String
+  email         String   @unique
+  phone         String?
+  passingYear   Int
+  profession    String?
+  company       String?
+  location      String?
+  bio           String?
+  imageUrl      String?
+  linkedinUrl   String?
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([passingYear])
+  @@index([active])
+}
