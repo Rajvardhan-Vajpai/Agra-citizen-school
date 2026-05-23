@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 // Rate limiting check
 const rateLimit = new Map<string, { count: number; resetTime: number }>();
@@ -92,7 +94,11 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    // Optional: Add authentication check here for admin access
+    const session = await getServerSession(authOptions);
+    if (!session || session.user.role !== "admin") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const inquiries = await prisma.inquiry.findMany({
       orderBy: { createdAt: "desc" },
       take: 50,
